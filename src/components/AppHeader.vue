@@ -6,7 +6,7 @@
         <h1>Turkey <span>Overview</span></h1>
       </div>
       <AppSearch
-        :items="countries"
+        :items="getCountries"
         filterBy="country"
         @selectedItem="onSelected"
       />
@@ -16,6 +16,8 @@
 
 <script>
 import AppSearch from "@/components/AppSearch";
+import { mapGetters } from "vuex";
+
 export default {
   name: "AppHeader",
   components: {
@@ -32,6 +34,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["getCountries"]),
     countryFlag() {
       return `${this.publicPath}flags/TR.png`;
     }

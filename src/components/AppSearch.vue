@@ -115,6 +115,8 @@ export default {
     }
   }
   .search-dropdown {
+    max-height: 300px;
+    overflow-y: scroll;
     position: absolute;
     top: 100%;
     left: 0;

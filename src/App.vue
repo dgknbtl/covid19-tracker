@@ -17,6 +17,8 @@ import AppChart from "@/components/AppChart";
 import AppTable from "@/components/AppTable";
 import AppFooter from "@/components/AppFooter";
 
+import { mapActions } from "vuex";
+
 export default {
   name: "App",
   components: {
@@ -25,6 +27,12 @@ export default {
     AppChart,
     AppTable,
     AppFooter
+  },
+  methods: {
+    ...mapActions(["fetchCountries"])
+  },
+  created() {
+    this.fetchCountries();
   }
 };
 </script>
