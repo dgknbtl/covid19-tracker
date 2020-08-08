@@ -26,22 +26,27 @@ export default {
   data() {
     return {
       publicPath: process.env.BASE_URL,
-      countries: [
-        { country: "Turkey", code: "TR" },
-        { country: "United States", code: "US" },
-        { country: "United Kingdom", code: "GB" }
-      ]
+      selectedCountry: null
     };
   },
   computed: {
     ...mapGetters(["getCountries"]),
     countryFlag() {
-      return `${this.publicPath}flags/TR.png`;
+      // return this.selectedCountry
+      //   ? `${this.publicPath}flags/${this.selectedCountry.alpha2Code}.png`
+      //   : `${this.publicPath}flags/global.png`;
+      // return  `${this.publicPath}flags/TR.png`;
+      return true;
+    }
+  },
+  watch: {
+    selectedCountry(first, last) {
+      console.log(first, last);
     }
   },
   methods: {
     onSelected(value) {
-      console.log(value);
+      this.selectedCountry = value;
     }
   }
 };

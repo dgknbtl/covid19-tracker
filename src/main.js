@@ -6,6 +6,16 @@ import "./styles/app.css";
 
 Vue.config.productionTip = false;
 
+Vue.mixin({
+  methods: {
+    numberFormat(value) {
+      return new Intl.NumberFormat({
+        maximumSignificantDigits: 3
+      }).format(value);
+    }
+  }
+});
+
 new Vue({
   store,
   render: h => h(App)

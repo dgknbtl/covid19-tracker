@@ -29,10 +29,11 @@ export default {
     AppFooter
   },
   methods: {
-    ...mapActions(["fetchCountries"])
+    ...mapActions(["fetchCountries", "fetchSummaryData"])
   },
   created() {
     this.fetchCountries();
+    this.fetchSummaryData();
   }
 };
 </script>

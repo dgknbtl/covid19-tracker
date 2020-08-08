@@ -3,23 +3,34 @@
     <div class="card-list">
       <div class="card-summary card-1">
         <span class="label">TOTAL CASES</span>
-        <div class="value">19,257,153</div>
+        <div class="value">
+          {{ numberFormat(getWorldSummary.TotalConfirmed) }}
+        </div>
       </div>
       <div class="card-summary card-2">
         <span class="label">TOTAL DEATHS</span>
-        <div class="value">57,153</div>
+        <div class="value">
+          {{ numberFormat(getWorldSummary.TotalDeaths) }}
+        </div>
       </div>
       <div class="card-summary card-3">
         <span class="label">TOTAL RECOVERED</span>
-        <div class="value">2,257,153</div>
+        <div class="value">
+          {{ numberFormat(getWorldSummary.TotalRecovered) }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  name: "AppSummaryCards"
+  name: "AppSummaryCards",
+  computed: {
+    ...mapGetters(["getWorldSummary"])
+  }
 };
 </script>
 
