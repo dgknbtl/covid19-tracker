@@ -5,34 +5,40 @@
         <img :src="countryFlag" class="country-flag" width="38" />
         <h1>Turkey <span>Overview</span></h1>
       </div>
-      <div class="header-search">
-        <input
-          type="text"
-          class="search-input"
-          placeholder="Search a Country"
-        />
-        <SearchIcon size="1.5x" class="search-icon" />
-      </div>
+      <AppSearch
+        :items="countries"
+        filterBy="country"
+        @selectedItem="onSelected"
+      />
     </header>
   </div>
 </template>
 
 <script>
-import { SearchIcon } from "vue-feather-icons";
-
+import AppSearch from "@/components/AppSearch";
 export default {
   name: "AppHeader",
   components: {
-    SearchIcon
+    AppSearch
   },
   data() {
     return {
-      publicPath: process.env.BASE_URL
+      publicPath: process.env.BASE_URL,
+      countries: [
+        { country: "Turkey", code: "TR" },
+        { country: "United States", code: "US" },
+        { country: "United Kingdom", code: "GB" }
+      ]
     };
   },
   computed: {
     countryFlag() {
       return `${this.publicPath}flags/TR.png`;
+    }
+  },
+  methods: {
+    onSelected(value) {
+      console.log(value);
     }
   }
 };
@@ -64,33 +70,6 @@ export default {
       }
     }
   }
-  .header-search {
-    position: relative;
-    width: 280px;
-    .search-input {
-      width: 100%;
-      height: 50px;
-      background-color: rgb(var(--light));
-      border-radius: var(--border-radius);
-      text-align: center;
-      font-size: 16px;
-      border: 2px solid transparent;
-      transition: all 300ms;
-      padding-left: 50px;
-      padding-right: 50px;
-      font-weight: 500;
-      &:focus {
-        background-color: white;
-        border-color: rgb(var(--light));
-      }
-    }
-    .search-icon {
-      position: absolute;
-      top: 50%;
-      left: 20px;
-      transform: translateY(-50%);
-    }
-  }
 
   @media (--t-sm) {
     flex-direction: column;
@@ -100,11 +79,6 @@ export default {
       h1 {
         font-size: 18px;
       }
-    }
-    .header-search {
-      margin-top: 10px;
-      width: 100%;
-      max-width: 400px;
     }
   }
 }
