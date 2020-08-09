@@ -1,14 +1,25 @@
 <template>
   <div>
     <div class="header-search">
-      <input
+      <!-- <input
         type="text"
         class="search-input"
         v-model="query"
-        placeholder="Select a Country"
+        @keydown.enter="selectItem"
+        :placeholder="selectedItem ? selectedItem.country : ''"
+      /> -->
+      <input
+        type="text"
+        class="search-input"
+        :value="query"
+        @input="e => (query = e.target.value)"
+        @keydown.enter="selectItem"
+        @keydown.up="up"
+        @keydown.down="down"
+        :placeholder="selectedItem ? selectedItem.country : ''"
       />
       <SearchIcon size="1.5x" class="search-icon" />
-      <div class="search-dropdown" v-show="visible">
+      <div class="search-dropdown" v-show="visible" ref="countryList">
         <ul>
           <li
             v-for="(item, index) in matches"
@@ -65,6 +76,23 @@ export default {
       this.selectedItem = this.matches[this.selected];
       this.visible = false;
       this.$emit("selectedItem", JSON.parse(JSON.stringify(this.selectedItem)));
+    },
+    up() {
+      if (this.selected == 0) {
+        return;
+      }
+      this.selected -= 1;
+      this.scrollToItem();
+    },
+    down() {
+      if (this.selected >= this.matches.length - 1) {
+        return;
+      }
+      this.selected += 1;
+      this.scrollToItem();
+    },
+    scrollToItem() {
+      this.$refs.countryList.scrollTop = this.selected * this.itemHeight;
     }
   },
   watch: {
