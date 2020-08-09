@@ -1,13 +1,6 @@
 <template>
   <div>
     <div class="header-search">
-      <!-- <input
-        type="text"
-        class="search-input"
-        v-model="query"
-        @keydown.enter="selectItem"
-        :placeholder="selectedItem ? selectedItem.country : ''"
-      /> -->
       <input
         type="text"
         class="search-input"
@@ -16,7 +9,7 @@
         @keydown.enter="selectItem"
         @keydown.up="up"
         @keydown.down="down"
-        :placeholder="selectedItem ? selectedItem.country : ''"
+        :placeholder="selectedItem ? selectedItem.country : 'Search a Country'"
       />
       <SearchIcon size="1.5x" class="search-icon" />
       <div class="search-dropdown" v-show="visible" ref="countryList">
