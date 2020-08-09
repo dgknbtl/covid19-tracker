@@ -5,14 +5,18 @@
         <div class="section-title">COUNTRIES AFFECTED</div>
         <input
           type="text"
-          v-model="searchQuery"
+          :value="searchQuery"
+          @input="e => (searchQuery = e.target.value)"
           class="search-input"
           placeholder="Search a Country"
         />
       </div>
       <div class="table-wrapper" :class="{ loading: loader }">
+        <div class="not-found" v-show="!filterData.length">
+          No matching country found!
+        </div>
         <table class="table" v-show="!loader">
-          <thead>
+          <thead v-show="filterData.length">
             <tr>
               <th>COUNTRY</th>
               <th>CASES</th>
@@ -76,11 +80,11 @@ export default {
     }
   },
   watch: {
-    filterData() {
+    getCountriesSummary() {
       this.loader = true;
       setTimeout(() => {
         this.loader = false;
-      }, 100);
+      }, 50);
     }
   }
 };
@@ -93,6 +97,17 @@ export default {
   overflow-y: scroll;
   overflow-x: hidden;
   min-height: 200px;
+  .not-found {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgb(var(--gray-1));
+  }
 }
 .table-card {
   background-color: #fff;
