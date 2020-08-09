@@ -73,7 +73,7 @@ export default new Vuex.Store({
         const response = await axios.get(`${state.apiBase}/summary`);
         const global = response.data.Global;
         const countries = response.data.Countries;
-        const date = response.data.Date;
+        const date = response.data.Date.split("T")[0];
         const monthNames = [
           "January",
           "February",
@@ -93,7 +93,6 @@ export default new Vuex.Store({
         const dataDate = `${d.getDate()} ${
           monthNames[d.getMonth()]
         } ${d.getFullYear()}`;
-        console.log(dataDate);
 
         const newCountries = countries
           .map(item => item)
@@ -141,11 +140,10 @@ export default new Vuex.Store({
                 "December"
               ];
 
-              const d = new Date(date);
+              const d = new Date(date.split("T")[0]);
               const newDate = `${d.getDate()} ${
                 monthNames[d.getMonth()]
               } ${d.getFullYear()}`;
-
               return {
                 Country,
                 Date: newDate,
