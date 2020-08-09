@@ -1,7 +1,10 @@
 <template>
   <div class="container section-gap" v-show="!loader">
     <div class="chart-card">
-      <div class="section-title">PAST 15 DAYS CHART OF TURKEY</div>
+      <div class="section-title">
+        PAST 15 DAYS CHART OF
+        <span>{{ selectedItem ? selectedItem.country : "" }}</span>
+      </div>
       <VueApexCharts
         height="500"
         type="bar"
@@ -40,6 +43,13 @@ export default {
             horizontal: false
           }
         },
+        dataLabels: {
+          enabled: false
+        },
+        tooltip: {
+          shared: true,
+          followCursor: true
+        },
         stroke: {
           width: 1,
           colors: ["#fff"]
@@ -51,12 +61,13 @@ export default {
           position: "top",
           horizontalAlign: "center",
           offsetX: 40
-        }
+        },
+        colors: ["rgb(95, 193, 215)", "rgb(226, 37, 43)", "rgb(94, 181, 89)"]
       }
     };
   },
   computed: {
-    ...mapGetters(["get15DaysData"])
+    ...mapGetters(["getMonthlyData"])
   },
   methods: {
     ...mapActions(["fetchCountryData"]),
@@ -65,10 +76,10 @@ export default {
       await this.fillData();
     },
     fillData() {
-      const confirmed = this.get15DaysData.map(item => item.Confirmed);
-      const deaths = this.get15DaysData.map(item => item.Deaths);
-      const recovered = this.get15DaysData.map(item => item.Recovered);
-      const date = this.get15DaysData.map(item => item.Date);
+      const confirmed = this.getMonthlyData.map(item => item.Confirmed);
+      const deaths = this.getMonthlyData.map(item => item.Deaths);
+      const recovered = this.getMonthlyData.map(item => item.Recovered);
+      const date = this.getMonthlyData.map(item => item.Date);
       this.series = [
         {
           name: "Confirmed",
@@ -95,8 +106,8 @@ export default {
       this.countryCode = val.alpha2Code;
       this.fetchData();
     },
-    get15DaysData() {
-      if (this.get15DaysData.length) {
+    getMonthlyData() {
+      if (this.getMonthlyData.length) {
         this.loader = false;
       } else {
         this.loader = true;
@@ -111,5 +122,8 @@ export default {
   min-height: 400px;
   background-color: #fff;
   border-radius: var(--border-radius);
+  .section-title {
+    text-transform: uppercase;
+  }
 }
 </style>

@@ -26,6 +26,9 @@ export default new Vuex.Store({
     get15DaysData(state) {
       return state.countryData.slice(-15);
     },
+    getMonthlyData(state) {
+      return state.countryData.slice(-30);
+    },
     getDataDate(state) {
       return state.dataDate;
     }
