@@ -6,7 +6,7 @@
         <h1 v-if="selectedCountry">
           {{ selectedCountry.country }} <span>Overview</span>
         </h1>
-        <h1 v-else>Globlal <span>Statistics</span></h1>
+        <h1 v-else>Global <span>Statistics</span></h1>
       </div>
       <AppSearch
         :items="getCountries"
@@ -38,7 +38,6 @@ export default {
       return this.selectedCountry
         ? `${this.publicPath}flags/${this.selectedCountry.alpha2Code}.png`
         : `${this.publicPath}flags/global.png`;
-      // return true;
     },
     country() {
       return true;
@@ -47,6 +46,7 @@ export default {
   methods: {
     onSelected(value) {
       this.selectedCountry = value;
+      this.$emit("selectedItem", this.selectedCountry);
     }
   }
 };

@@ -1,8 +1,8 @@
 <template>
   <div class="app">
     <main class="main">
-      <AppHeader />
-      <AppSummary />
+      <AppHeader @selectedItem="onSelected" />
+      <AppSummary :selectedItem="selectedItem" />
       <AppChart />
       <AppTable />
       <AppFooter />
@@ -28,8 +28,16 @@ export default {
     AppTable,
     AppFooter
   },
+  data() {
+    return {
+      selectedItem: null
+    };
+  },
   methods: {
-    ...mapActions(["fetchCountries", "fetchSummaryData"])
+    ...mapActions(["fetchCountries", "fetchSummaryData"]),
+    onSelected(value) {
+      this.selectedItem = value;
+    }
   },
   created() {
     this.fetchCountries();

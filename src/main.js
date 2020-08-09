@@ -11,7 +11,9 @@ Vue.mixin({
     numberFormat(value) {
       return new Intl.NumberFormat({
         maximumSignificantDigits: 3
-      }).format(value);
+      })
+        .format(value)
+        .toString(value);
     }
   }
 });
