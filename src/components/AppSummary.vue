@@ -1,33 +1,41 @@
 <template>
   <div class="container section-gap">
     <div class="card-list">
-      <div class="card-summary card-1">
-        <span class="label">TOTAL CASES</span>
-        <div class="value">
-          {{ numberFormat(totalConfirmed) }}
-        </div>
-        <div class="value-2" v-show="newConfirmed > 0">
-          <span v-if="newConfirmed > 0">+</span>
-          {{ numberFormat(newConfirmed) }}
-        </div>
-      </div>
-      <div class="card-summary card-2">
-        <span class="label">TOTAL DEATHS</span>
-        <div class="value">
-          {{ numberFormat(totalDeaths) }}
-        </div>
-        <div class="value-2" v-show="newDeaths > 0">
-          <span v-if="newDeaths > 0">+</span> {{ numberFormat(newDeaths) }}
+      <div class="card-summary card-1" :class="{ loading: loader }">
+        <div v-show="!loader">
+          <span class="label">TOTAL CASES</span>
+          <div class="value">
+            {{ numberFormat(totalConfirmed) }}
+          </div>
+          <div class="value-2" v-show="newConfirmed > 0">
+            <span v-if="newConfirmed > 0">+</span>
+            {{ numberFormat(newConfirmed) }}
+          </div>
         </div>
       </div>
-      <div class="card-summary card-3">
-        <span class="label">TOTAL RECOVERED</span>
-        <div class="value">
-          {{ numberFormat(totalRecovered) }}
+
+      <div class="card-summary card-2" :class="{ loading: loader }">
+        <div v-show="!loader">
+          <span class="label">TOTAL DEATHS</span>
+          <div class="value">
+            {{ numberFormat(totalDeaths) }}
+          </div>
+          <div class="value-2" v-show="newDeaths > 0">
+            <span v-if="newDeaths > 0">+</span> {{ numberFormat(newDeaths) }}
+          </div>
         </div>
-        <div class="value-2" v-show="newRecovered > 0">
-          <span v-if="newRecovered > 0">+</span>
-          {{ numberFormat(newRecovered) }}
+      </div>
+
+      <div class="card-summary card-3" :class="{ loading: loader }">
+        <div v-show="!loader">
+          <span class="label">TOTAL RECOVERED</span>
+          <div class="value">
+            {{ numberFormat(totalRecovered) }}
+          </div>
+          <div class="value-2" v-show="newRecovered > 0">
+            <span v-if="newRecovered > 0">+</span>
+            {{ numberFormat(newRecovered) }}
+          </div>
         </div>
       </div>
     </div>
@@ -42,7 +50,8 @@ export default {
   props: ["selectedItem"],
   data() {
     return {
-      countrySummary: null
+      countrySummary: null,
+      loader: true
     };
   },
   computed: {
@@ -81,6 +90,18 @@ export default {
   watch: {
     selectedItem() {
       this.searchCountry();
+    },
+    getWorldSummary() {
+      this.loader = true;
+      setTimeout(() => {
+        this.loader = false;
+      }, 200);
+    },
+    countrySummary() {
+      this.loader = true;
+      setTimeout(() => {
+        this.loader = false;
+      }, 250);
     }
   },
   methods: {
@@ -176,6 +197,12 @@ export default {
       border-color: rgb(var(--primary));
       box-shadow: 0 0 30px rgba(var(--primary), 0.2);
     }
+    &.loading {
+      &::after {
+        border: 5px solid rgba(var(--primary), 0.3);
+        border-top-color: rgb(var(--primary));
+      }
+    }
   }
 
   &.card-2 {
@@ -191,6 +218,12 @@ export default {
     &:hover {
       border-color: rgb(var(--second));
       box-shadow: 0 0 30px rgba(var(--second), 0.2);
+    }
+    &.loading {
+      &::after {
+        border: 5px solid rgba(var(--second), 0.3);
+        border-top-color: rgb(var(--second));
+      }
     }
   }
 
@@ -208,6 +241,44 @@ export default {
       border-color: rgb(var(--third));
       box-shadow: 0 0 30px rgba(var(--third), 0.2);
     }
+    &.loading {
+      &::after {
+        border: 5px solid rgba(var(--third), 0.3);
+        border-top-color: rgb(var(--third));
+      }
+    }
+  }
+
+  &.loading {
+    &::after {
+      content: "";
+      box-sizing: border-box;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      width: 30px;
+      height: 30px;
+      margin-top: -10px;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 50%;
+      border: 5px solid #ccc;
+      border-top-color: #000;
+      animation: spinner 0.6s linear infinite;
+    }
+  }
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spinner {
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>
