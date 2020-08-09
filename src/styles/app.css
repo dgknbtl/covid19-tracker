@@ -76,4 +76,14 @@ a {
     &-right{
         text-align: right!important;
     }
+
+    &-primary{
+      color:rgb(var(--primary))!important;
+    }
+    &-second{
+      color:rgb(var(--second))!important;
+    }
+    &-third{
+      color:rgb(var(--third))!important;
+    }
 }

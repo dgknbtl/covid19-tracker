@@ -1,97 +1,123 @@
 <template>
   <div class="container section-gap">
     <div class="table-card">
-      <div class="section-title">COUNTRIES AFFECTED</div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>COUNTRY</th>
-            <th>CASES</th>
-            <th>NEW CASES</th>
-            <th>DEATHS</th>
-            <th>NEW DEATHS</th>
-            <th>RECOVERED</th>
-            <th>NEW RECOVERED</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="country">
-              <img :src="countryFlag" width="22" />
-              Turkey
-            </td>
-            <td>2,0000,000</td>
-            <td>1,500</td>
-            <td>5,812</td>
-            <td>16</td>
-            <td>250,222</td>
-            <td>1,234</td>
-          </tr>
-          <tr>
-            <td class="country">
-              <img :src="countryFlag" width="22" />
-              Turkey
-            </td>
-            <td>200,000</td>
-            <td>1,500</td>
-            <td>5,812</td>
-            <td>16</td>
-            <td>250,222</td>
-            <td>1,234</td>
-          </tr>
-          <tr>
-            <td class="country">
-              <img :src="countryFlag" width="22" />
-              Turkey
-            </td>
-            <td>200,000</td>
-            <td>1,500</td>
-            <td>5,812</td>
-            <td>16</td>
-            <td>250,222</td>
-            <td>1,234</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-card-header">
+        <div class="section-title">COUNTRIES AFFECTED</div>
+        <input
+          type="text"
+          v-model="searchQuery"
+          class="search-input"
+          placeholder="Search a Country"
+        />
+      </div>
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>COUNTRY</th>
+              <th>CASES</th>
+              <th>NEW CASES</th>
+              <th>DEATHS</th>
+              <th>NEW DEATHS</th>
+              <th>RECOVERED</th>
+              <th>NEW RECOVERED</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in filterData" :key="index">
+              <td class="country">
+                <img
+                  :src="`${publicPath}flags/${item.CountryCode}.png`"
+                  width="22"
+                />
+                {{ item.Country }}
+              </td>
+              <td>{{ numberFormat(item.TotalConfirmed) }}</td>
+              <td :class="{ 'text-primary': item.NewDeaths > 0 }">
+                {{ item.NewDeaths > 0 ? numberFormat(item.NewDeaths) : "" }}
+              </td>
+              <td>{{ numberFormat(item.TotalRecovered) }}</td>
+              <td :class="{ 'text-second': item.NewDeaths > 0 }">
+                {{ item.NewDeaths > 0 ? numberFormat(item.NewConfirmed) : "" }}
+              </td>
+              <td>{{ numberFormat(item.TotalDeaths) }}</td>
+              <td :class="{ 'text-third': item.NewDeaths > 0 }">
+                {{ item.NewDeaths > 0 ? numberFormat(item.NewRecovered) : "" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "AppTable",
   data() {
     return {
-      publicPath: process.env.BASE_URL
+      publicPath: process.env.BASE_URL,
+      searchQuery: ""
     };
   },
-
   computed: {
-    countryFlag() {
-      return `${this.publicPath}flags/TR.png`;
+    ...mapGetters(["getCountriesSummary"]),
+    filterData() {
+      if (this.searchQuery == "") {
+        return this.getCountriesSummary;
+      }
+      return this.getCountriesSummary.filter(item => {
+        return item.Country.toLowerCase().match(this.searchQuery.toLowerCase());
+      });
     }
   }
 };
 </script>
 
 <style scoped>
+.table-wrapper {
+  max-height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  min-height: 200px;
+}
 .table-card {
   background-color: #fff;
   border-radius: var(--border-radius);
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 30px;
+    .search-input {
+      max-width: 200px;
+      height: 36px;
+      background-color: rgb(var(--light));
+      border-radius: var(--border-radius);
+      padding: 15px;
+    }
+  }
 }
 
 .table {
   border-collapse: collapse;
   width: 100%;
+  position: relative;
   thead {
-    background-color: rgb(var(--light), 0.5);
+    background-color: rgba(var(--light), 0.5);
     tr {
       th {
+        position: sticky;
+        top: 0;
         text-align: left;
         padding: 10px 30px;
         font-size: 11px;
         font-weight: 600;
         color: rgb(var(--gray-2));
+        background-color: rgb(var(--light));
         & + th {
           border-left: 1px solid rgba(var(--gray-3), 0.1);
         }
