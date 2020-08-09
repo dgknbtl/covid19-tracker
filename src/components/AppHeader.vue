@@ -3,7 +3,10 @@
     <header class="header">
       <div class="header-title">
         <img :src="countryFlag" class="country-flag" width="38" />
-        <h1>Turkey <span>Overview</span></h1>
+        <h1 v-if="selectedCountry">
+          {{ selectedCountry.country }} <span>Overview</span>
+        </h1>
+        <h1 v-else>Globlal <span>Statistics</span></h1>
       </div>
       <AppSearch
         :items="getCountries"
@@ -32,16 +35,13 @@ export default {
   computed: {
     ...mapGetters(["getCountries"]),
     countryFlag() {
-      // return this.selectedCountry
-      //   ? `${this.publicPath}flags/${this.selectedCountry.alpha2Code}.png`
-      //   : `${this.publicPath}flags/global.png`;
-      // return  `${this.publicPath}flags/TR.png`;
+      return this.selectedCountry
+        ? `${this.publicPath}flags/${this.selectedCountry.alpha2Code}.png`
+        : `${this.publicPath}flags/global.png`;
+      // return true;
+    },
+    country() {
       return true;
-    }
-  },
-  watch: {
-    selectedCountry(first, last) {
-      console.log(first, last);
     }
   },
   methods: {
