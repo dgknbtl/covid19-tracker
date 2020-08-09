@@ -12,7 +12,10 @@
         />
       </div>
       <div class="table-wrapper" :class="{ loading: loader }">
-        <div class="not-found" v-show="!filterData.length">
+        <div
+          class="not-found"
+          v-show="!filterData.length && searchQuery.length"
+        >
           No matching country found!
         </div>
         <table class="table" v-show="!loader">

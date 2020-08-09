@@ -2,11 +2,14 @@
   <div class="container container-wide">
     <header class="header">
       <div class="header-title">
-        <img :src="countryFlag" class="country-flag" width="38" />
-        <h1 v-if="selectedCountry">
-          {{ selectedCountry.country }} <span>Overview</span>
-        </h1>
-        <h1 v-else>Global <span>Statistics</span></h1>
+        <img :src="countryFlag" class="country-flag" width="52" />
+        <div class="right">
+          <h1 v-if="selectedCountry">
+            {{ selectedCountry.country }} <span>Overview</span>
+          </h1>
+          <h1 v-else>Global <span>Statistics</span></h1>
+          <span class="date">{{ getDataDate }}</span>
+        </div>
       </div>
       <AppSearch
         :items="getCountries"
@@ -33,7 +36,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getCountries"]),
+    ...mapGetters(["getCountries", "getDataDate"]),
     countryFlag() {
       return this.selectedCountry
         ? `${this.publicPath}flags/${this.selectedCountry.alpha2Code}.png`
@@ -68,14 +71,22 @@ export default {
   .header-title {
     display: flex;
     align-items: center;
-    h1 {
-      font-size: 22px;
-      font-weight: 800;
-      color: rgb(var(--gray-2));
+    .right {
       margin-left: 10px;
+      line-height: 20px;
+    }
+    h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: rgb(var(--gray-3));
       span {
         font-weight: 500;
       }
+    }
+    .date {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgb(var(--gray-1));
     }
   }
 

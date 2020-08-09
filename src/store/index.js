@@ -10,7 +10,8 @@ export default new Vuex.Store({
     countries: [],
     worldSummary: [],
     countriesSummary: [],
-    countryData: []
+    countryData: [],
+    dataDate: null
   },
   getters: {
     getCountries(state) {
@@ -24,14 +25,18 @@ export default new Vuex.Store({
     },
     get15DaysData(state) {
       return state.countryData.slice(-15);
+    },
+    getDataDate(state) {
+      return state.dataDate;
     }
   },
   mutations: {
     ["SET_COUNTRIES"](state, value) {
       state.countries = value;
     },
-    ["SET_WORLD_SUMMARY"](state, value) {
-      state.worldSummary = value;
+    ["SET_WORLD_SUMMARY"](state, { global, dataDate }) {
+      state.worldSummary = global;
+      state.dataDate = dataDate;
     },
     ["SET_COUNTRIES_SUMMARY"](state, value) {
       state.countriesSummary = value;
@@ -68,13 +73,34 @@ export default new Vuex.Store({
         const response = await axios.get(`${state.apiBase}/summary`);
         const global = response.data.Global;
         const countries = response.data.Countries;
+        const date = response.data.Date;
+        const monthNames = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
+        ];
+
+        const d = new Date(date);
+        const dataDate = `${d.getDate()} ${
+          monthNames[d.getMonth()]
+        } ${d.getFullYear()}`;
+        console.log(dataDate);
 
         const newCountries = countries
           .map(item => item)
           .sort(function(a, b) {
             return b.TotalConfirmed - a.TotalConfirmed;
           });
-        commit("SET_WORLD_SUMMARY", global);
+        commit("SET_WORLD_SUMMARY", { global, dataDate });
         commit("SET_COUNTRIES_SUMMARY", newCountries);
       } catch (error) {
         console.log(error);
