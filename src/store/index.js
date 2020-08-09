@@ -9,7 +9,8 @@ export default new Vuex.Store({
     apiBase: "https://api.covid19api.com",
     countries: [],
     worldSummary: [],
-    countriesSummary: []
+    countriesSummary: [],
+    countryData: []
   },
   getters: {
     getCountries(state) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     },
     getCountriesSummary(state) {
       return state.countriesSummary;
+    },
+    get15DaysData(state) {
+      return state.countryData.slice(-15);
     }
   },
   mutations: {
@@ -31,6 +35,9 @@ export default new Vuex.Store({
     },
     ["SET_COUNTRIES_SUMMARY"](state, value) {
       state.countriesSummary = value;
+    },
+    ["SET_COUNTRY_DATA"](state, value) {
+      state.countryData = value;
     }
   },
   actions: {
@@ -69,6 +76,61 @@ export default new Vuex.Store({
           });
         commit("SET_WORLD_SUMMARY", global);
         commit("SET_COUNTRIES_SUMMARY", newCountries);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async fetchCountryData({ commit, state }, countryCode) {
+      try {
+        if (countryCode) {
+          const response = await axios.get(
+            `${state.apiBase}/total/country/${countryCode}`
+          );
+          const data = response.data;
+          const newData = data
+            .filter(item => item.Confirmed > 0)
+            .map(item => {
+              const {
+                Country,
+                Date: date,
+                Confirmed,
+                Deaths,
+                Recovered,
+                Active
+              } = item;
+
+              const monthNames = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+              ];
+
+              const d = new Date(date);
+              const newDate = `${d.getDate()} ${
+                monthNames[d.getMonth()]
+              } ${d.getFullYear()}`;
+
+              return {
+                Country,
+                Date: newDate,
+                Confirmed,
+                Deaths,
+                Recovered,
+                Active
+              };
+            });
+          commit("SET_COUNTRY_DATA", newData);
+        }
       } catch (error) {
         console.log(error);
       }

@@ -12,7 +12,7 @@
 <script>
 import { GithubIcon } from "vue-feather-icons";
 export default {
-  name: "AppChart",
+  name: "AppFooter",
   components: {
     GithubIcon
   }

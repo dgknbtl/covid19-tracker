@@ -3,7 +3,7 @@
     <main class="main">
       <AppHeader @selectedItem="onSelected" />
       <AppSummary :selectedItem="selectedItem" />
-      <AppChart />
+      <AppChart :selectedItem="selectedItem" />
       <AppTable />
       <AppFooter />
     </main>
