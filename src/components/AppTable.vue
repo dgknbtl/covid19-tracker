@@ -10,8 +10,8 @@
           placeholder="Search a Country"
         />
       </div>
-      <div class="table-wrapper">
-        <table class="table">
+      <div class="table-wrapper" :class="{ loading: loader }">
+        <table class="table" v-show="!loader">
           <thead>
             <tr>
               <th>COUNTRY</th>
@@ -60,7 +60,8 @@ export default {
   data() {
     return {
       publicPath: process.env.BASE_URL,
-      searchQuery: ""
+      searchQuery: "",
+      loader: true
     };
   },
   computed: {
@@ -73,12 +74,21 @@ export default {
         return item.Country.toLowerCase().match(this.searchQuery.toLowerCase());
       });
     }
+  },
+  watch: {
+    filterData() {
+      this.loader = true;
+      setTimeout(() => {
+        this.loader = false;
+      }, 100);
+    }
   }
 };
 </script>
 
 <style scoped>
 .table-wrapper {
+  position: relative;
   max-height: 600px;
   overflow-y: scroll;
   overflow-x: hidden;
