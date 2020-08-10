@@ -1,4 +1,4 @@
-![covid19-tracker](https://user-images.githubusercontent.com/10329339/82932717-834a9980-9f91-11ea-92a8-6b1cdceaff0b.gif)
+![covid19-tracker](https://user-images.githubusercontent.com/10329339/89811743-c1466b00-db47-11ea-960d-3b3c6841a711.gif)
 
 # Covid-19: Tracker
 You can track summary covid-19 data for a general or specific country. This application was developed with Vue.js. The application retrieves data from [covid19api.com](https://covid19api.com)
@@ -29,6 +29,8 @@ ___
 
 #### Acknowledgements
 All of the included images are Copyright (c) 2013 Go Squared Ltd. http://www.gosquared.com/ Go Squared have very generously provided the images under the MIT License. [Flags License](https://github.com/balazser/FlagAndCountryData/blob/master/flags/LICENSE.txt)
+
+[Virus icon - Flaticon](https://www.flaticon.com/authors/freepik)
 ___
 
 #### Author
