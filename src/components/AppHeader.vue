@@ -7,7 +7,7 @@
           <h1 v-if="selectedCountry">
             {{ selectedCountry.country }} <span>Overview</span>
           </h1>
-          <h1 v-else>Global <span>Statistics</span></h1>
+          <h1 v-else>Covid-19<span> Global Statistics</span></h1>
           <span class="date">{{ getDataDate }}</span>
         </div>
       </div>
@@ -40,7 +40,7 @@ export default {
     countryFlag() {
       return this.selectedCountry
         ? `${this.publicPath}flags/${this.selectedCountry.alpha2Code}.png`
-        : `${this.publicPath}flags/global.png`;
+        : `${this.publicPath}img/virus.png`;
     },
     country() {
       return true;
@@ -87,6 +87,15 @@ export default {
       font-size: 13px;
       font-weight: 500;
       color: rgb(var(--gray-1));
+    }
+
+    @media (--m) {
+      margin-bottom: 10px;
+      h1 {
+        span {
+          display: block;
+        }
+      }
     }
   }
 
