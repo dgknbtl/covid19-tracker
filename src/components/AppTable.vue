@@ -40,16 +40,20 @@
                 {{ item.Country }}
               </td>
               <td>{{ numberFormat(item.TotalConfirmed) }}</td>
-              <td :class="{ 'text-primary': item.NewDeaths > 0 }">
+              <td :class="{ 'text-primary': item.NewConfirmed > 0 }">
+                {{
+                  item.NewConfirmed > 0 ? numberFormat(item.NewConfirmed) : ""
+                }}
+              </td>
+              <td>{{ numberFormat(item.TotalDeaths) }}</td>
+              <td :class="{ 'text-second': item.NewDeaths > 0 }">
                 {{ item.NewDeaths > 0 ? numberFormat(item.NewDeaths) : "" }}
               </td>
               <td>{{ numberFormat(item.TotalRecovered) }}</td>
-              <td :class="{ 'text-second': item.NewDeaths > 0 }">
-                {{ item.NewDeaths > 0 ? numberFormat(item.NewConfirmed) : "" }}
-              </td>
-              <td>{{ numberFormat(item.TotalDeaths) }}</td>
-              <td :class="{ 'text-third': item.NewDeaths > 0 }">
-                {{ item.NewDeaths > 0 ? numberFormat(item.NewRecovered) : "" }}
+              <td :class="{ 'text-third': item.NewRecovered > 0 }">
+                {{
+                  item.NewRecovered > 0 ? numberFormat(item.NewRecovered) : ""
+                }}
               </td>
             </tr>
           </tbody>
@@ -99,7 +103,19 @@ export default {
   max-height: 600px;
   overflow-y: scroll;
   overflow-x: hidden;
-  min-height: 200px;
+  min-height: 100px;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(var(--gray-1), 0.5);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgb(var(--gray-3));
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--gray-2));
+  }
   .not-found {
     position: absolute;
     top: 50%;
@@ -167,7 +183,7 @@ export default {
         border-top: 1px solid rgba(var(--gray-3), 0.1);
       }
       td {
-        padding: 10px 30px;
+        padding: 15px 30px;
         font-size: 16px;
         font-weight: 600;
         color: rgb(var(--gray-3));
